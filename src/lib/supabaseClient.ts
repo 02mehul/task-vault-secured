@@ -10,6 +10,6 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 export const supabase = createClient(
-  supabaseUrl || 'https://placeholder.supabase.co',
-  supabaseAnonKey || 'placeholder-key'
+  supabaseUrl || (() => { throw new Error("VITE_SUPABASE_URL is not defined") })(),
+  supabaseAnonKey || (() => { throw new Error("VITE_SUPABASE_ANON_KEY is not defined") })()
 );

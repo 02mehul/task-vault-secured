@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Task, TaskInsert, TaskUpdate } from '@/features/tasks/types/task';
 
 export const useTasks = () => {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -50,6 +50,11 @@ export const useTasks = () => {
       .single();
 
     if (error) {
+      if (error.code === '23503') { // Foreign key violation
+        console.error("Stale user detected. Signing out.");
+        await signOut();
+        return { error: 'Session expired. Please log in again.' };
+      }
       return { error: error.message };
     }
 
