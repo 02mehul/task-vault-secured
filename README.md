@@ -124,7 +124,21 @@ src/
 
 supabase/
 └── schema.sql           # Database schema + RLS policies
+scripts/
+└── test_signup.js       # Script to test user signup flow
+test-db.js               # Simple database connection test
 ```
+
+## Scripts & Utilities
+
+The project includes helper scripts to verify backend connectivity and functionality.
+
+### Database Connection Test
+Run `node test-db.js` to verify that the application can connect to your local Supabase PostgreSQL instance.
+
+### Signup Flow Test
+Run `node scripts/test_signup.js` to verify the user signup process programmatically using the Supabase client. This script reads credentials from your `.env` file.
+
 
 ## Authentication Flow
 
