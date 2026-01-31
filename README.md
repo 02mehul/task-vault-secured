@@ -17,19 +17,49 @@ A secure task management app built with React, Vite, TypeScript, and Supabase.
 - **Backend**: Supabase (Auth + PostgreSQL)
 - **Routing**: React Router (client-side)
 
-## Getting Started
+## Deployment Context
+
+This project (`task-vault-secured`) is the frontend application. It is designed to be deployed as part of the **AventaLovable** deployment suite.
+
+If you are looking at this folder as `app/` inside the AventaLovable folder, here is how the structure works:
+
+- **`app/`**: This directory (where you are now) contains the source code for the TaskVault frontend.
+- **`../docker/`**: (Part of **AventaLovable**) Contains the Docker configuration for the backend services (Supabase, Kong, etc.).
+- **`../start.sh`**: (Part of **AventaLovable**) The automation script in the parent directory that orchestrates the full deployment.
+
+## Deployment
+
+To deploy this application, you must use the **AventaLovable** parent project scripts.
+
+**Do not** try to deploy solely from inside this `app` directory.
+
+1.  **Navigate to the parent directory** (`AventaLovable`).
+2.  **Run the start script**:
+    ```bash
+    ./start.sh
+    ```
+
+The `start.sh` script will:
+- Build this frontend application using the docker configuration from the parent project.
+- Start the entire Supabase backend stack.
+- Serve the application at `http://localhost:3000`.
+
+## Getting Started (Local Development)
+
+If you want to run the **frontend locally** while connecting to the Docker-hosted backend (or a cloud Supabase instance), follow these steps.
 
 ### Prerequisites
 
 - Node.js 18+ and npm
-- A Supabase project (hosted or local)
+- A running Supabase instance (either the local Docker setup or a hosted project)
 
 ### Installation
 
+**Important:** Make sure you are inside the `app/` directory.
+
 ```bash
-# Clone the repository
-git clone <your-repo-url>
-cd taskvault
+# If you are in the root directory:
+cd app
 
 # Install dependencies
 npm install
@@ -124,21 +154,7 @@ src/
 
 supabase/
 └── schema.sql           # Database schema + RLS policies
-scripts/
-└── test_signup.js       # Script to test user signup flow
-test-db.js               # Simple database connection test
 ```
-
-## Scripts & Utilities
-
-The project includes helper scripts to verify backend connectivity and functionality.
-
-### Database Connection Test
-Run `node test-db.js` to verify that the application can connect to your local Supabase PostgreSQL instance.
-
-### Signup Flow Test
-Run `node scripts/test_signup.js` to verify the user signup process programmatically using the Supabase client. This script reads credentials from your `.env` file.
-
 
 ## Authentication Flow
 
@@ -152,6 +168,25 @@ Run `node scripts/test_signup.js` to verify the user signup process programmatic
 - **Row Level Security**: All database queries are filtered by `user_id`
 - **Client-side validation**: Form inputs are validated before submission
 - **Auth state**: Managed via Supabase's `onAuthStateChange` listener
+
+## Troubleshooting
+
+### "Error: ENOENT: no such file or directory, open 'package.json'"
+
+**Cause:** You are likely trying to run `npm install` or `npm run dev` from the **root** directory of the repository, or even the `docker/` directory.
+
+**Solution:**
+- If you are trying to run the **frontend locally**: `cd app` first, then run your npm commands.
+- If you are trying to **deploy with Docker**: Run `./start.sh` from the **root** directory. Do not run npm commands manually unless you are developing.
+
+### "App directory is empty"
+
+**Cause:** If you cloned this repository recursively or as a submodule, the `app/` folder might not have been initialized.
+
+**Solution:**
+```bash
+git submodule update --init --recursive
+```
 
 ## License
 
