@@ -51,35 +51,11 @@ To deploy this application, you must use the **AventaLovable** parent project sc
     *   *(This automatically verifies new users so you don't need an email server.)*
 ---
 
-Step 2 - **Important:** Make sure you are inside the `app/` directory.
+Step 2 - Run npm install in ./ app folder 
 
-# If you are in the root directory:
-cd app
+Step 3 - use bash to run 
 
-# Install dependencies
-npm install 
-
-=======
-### Step 3: Start the Backend (Docker)
-Now start the database and backend services.
-
-1.  Still in the `docker` folder, run:
-    ```bash
-    docker compose up -d
-    ```
-2.  Wait a minute for everything to start.
-
----
-
-
-Step 3.  **Run Database Migration**:
-    This creates the tables in your database. Copy and run this *exact* command:
-    ```bash
-    npx supabase db push --db-url "postgresql://postgres:your-super-secret-and-long-postgres-password@localhost:54322/postgres?sslmode=disable" --include-all
-    ```
-    *   *Note: If this fails, make sure you are in the `app/` folder and Docker is running.*
-
----
+./start.sh - This will automatically do every part.
 
 ### Step 4: Run the App!
 You are ready.
