@@ -4,11 +4,10 @@ This guide explains how to run the TaskVault app using the `LovableStartup` depl
 
 **Goal:** Run the full application (Frontend + Backend + Database) on your local machine.
 
-## 🚀 Option 1: Run with LovableStartup (Deployment Project)
-
 This is the recommended way to simulate the full deployment stack.
 
-### Step 1: Install Prerequisites
+
+### Install Prerequisites
 Before you start, make sure you have these installed:
 1.  **Docker Desktop**: Open it and make sure it is running.
 2.  **Node.js (v20 or higher)**:
@@ -16,7 +15,7 @@ Before you start, make sure you have these installed:
     *   If you have v18 or older, **you must upgrade** to v20+ from [nodejs.org](https://nodejs.org/).
 3.  **Git Bash**: Recommended for running commands on Windows.
 
-<<<<<<< HEAD
+
 ## Deployment Context
 
 This project (`task-vault-secured`) is the frontend application. It is designed to be deployed as part of the **AventaLovable** deployment suite.
@@ -27,37 +26,16 @@ If you are looking at this folder as `app/` inside the AventaLovable folder, her
 - **`../docker/`**: (Part of **AventaLovable**) Contains the Docker configuration for the backend services (Supabase, Kong, etc.).
 - **`../start.sh`**: (Part of **AventaLovable**) The automation script in the parent directory that orchestrates the full deployment.
 
+
+
 ## Deployment
 
 To deploy this application, you must use the **AventaLovable** parent project scripts.
 
-**Do not** try to deploy solely from inside this `app` directory.
-
-1.  **Navigate to the parent directory** (`AventaLovable`).
-2.  **Run the start script**:
-    ```bash
-    ./start.sh
-    ```
-
-The `start.sh` script will:
-- Build this frontend application using the docker configuration from the parent project.
-- Start the entire Supabase backend stack.
-- Serve the application at `http://localhost:3000`.
-
 ## Getting Started (Local Development)
 
-If you want to run the **frontend locally** while connecting to the Docker-hosted backend (or a cloud Supabase instance), follow these steps.
-=======
----
->>>>>>> 10193f4 (Update package.json and check-db.js)
+### Step 1: Configure the Environment
 
-### Step 2: Configure the Environment
-We need to set up the backend configuration first.
-
-<<<<<<< HEAD
-- Node.js 18+ and npm
-- A running Supabase instance (either the local Docker setup or a hosted project)
-=======
 1.  Open your terminal in the root `LovableStartup` folder.
 2.  Go to the `docker` folder:
     ```bash
@@ -71,18 +49,16 @@ We need to set up the backend configuration first.
     *   Find the line: `ENABLE_EMAIL_AUTOCONFIRM=false`
     *   Change it to: `ENABLE_EMAIL_AUTOCONFIRM=true`
     *   *(This automatically verifies new users so you don't need an email server.)*
->>>>>>> 10193f4 (Update package.json and check-db.js)
-
 ---
 
-<<<<<<< HEAD
-**Important:** Make sure you are inside the `app/` directory.
+Step 2 - **Important:** Make sure you are inside the `app/` directory.
 
-```bash
 # If you are in the root directory:
 cd app
 
 # Install dependencies
+npm install 
+
 =======
 ### Step 3: Start the Backend (Docker)
 Now start the database and backend services.
@@ -95,18 +71,8 @@ Now start the database and backend services.
 
 ---
 
-### Step 4: Setup the Frontend & Database
-Now we switch to the app code.
 
-1.  Go back to the root, then into the `app` folder:
-    ```bash
-    cd ../app
-    ```
-2.  **Install Dependencies** (This installs the verified tools we need):
-    ```bash
-    npm install
-    ```
-3.  **Run Database Migration**:
+Step 3.  **Run Database Migration**:
     This creates the tables in your database. Copy and run this *exact* command:
     ```bash
     npx supabase db push --db-url "postgresql://postgres:your-super-secret-and-long-postgres-password@localhost:54322/postgres?sslmode=disable" --include-all
@@ -115,7 +81,7 @@ Now we switch to the app code.
 
 ---
 
-### Step 5: Run the App!
+### Step 4: Run the App!
 You are ready.
 
 1.  Start the frontend:
@@ -127,6 +93,8 @@ You are ready.
 ---
 ---
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 ## 💻 Option 2: Run Standalone (Without LovableStartup)
 
 If you just want to run the React frontend (e.g., for UI development), or if you already have a backend running elsewhere (like a cloud project).
@@ -135,7 +103,6 @@ If you just want to run the React frontend (e.g., for UI development), or if you
 Navigate to the `app` folder:
 ```bash
 cd app
->>>>>>> 10193f4 (Update package.json and check-db.js)
 npm install
 ```
 
@@ -181,7 +148,6 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
     3.  `docker compose up -d`
     4.  Run the migration command from Step 4 again.
 
-<<<<<<< HEAD
 supabase/
 └── schema.sql           # Database schema + RLS policies
 ```
@@ -231,4 +197,3 @@ MIT
 *   **`start.sh`**: A script in the root that automates Step 3.
 
 **Tech Stack:** React 18, TypeScript, Tailwind CSS, Supabase.
->>>>>>> 10193f4 (Update package.json and check-db.js)
