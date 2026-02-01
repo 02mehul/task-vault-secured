@@ -1,22 +1,22 @@
-# TaskVault
+# TaskVault (Lovable App Deployment)
 
-A secure task management app built with React, Vite, TypeScript, and Supabase.
+This guide explains how to run the TaskVault app using the `LovableStartup` deployment infrastructure.
 
-## Features
+**Goal:** Run the full application (Frontend + Backend + Database) on your local machine.
 
-- 🔐 Email/Password authentication
-- ✅ Full CRUD operations for tasks
-- 🔒 Row Level Security (RLS) - users only see their own tasks
-- 📱 Responsive, clean UI
-- ⚡ Static SPA export (deployable anywhere)
+## 🚀 Option 1: Run with LovableStartup (Deployment Project)
 
-## Tech Stack
+This is the recommended way to simulate the full deployment stack.
 
-- **Frontend**: React 18, TypeScript, Vite
-- **Styling**: Tailwind CSS, shadcn/ui
-- **Backend**: Supabase (Auth + PostgreSQL)
-- **Routing**: React Router (client-side)
+### Step 1: Install Prerequisites
+Before you start, make sure you have these installed:
+1.  **Docker Desktop**: Open it and make sure it is running.
+2.  **Node.js (v20 or higher)**:
+    *   Open your terminal and check: `node -v`
+    *   If you have v18 or older, **you must upgrade** to v20+ from [nodejs.org](https://nodejs.org/).
+3.  **Git Bash**: Recommended for running commands on Windows.
 
+<<<<<<< HEAD
 ## Deployment Context
 
 This project (`task-vault-secured`) is the frontend application. It is designed to be deployed as part of the **AventaLovable** deployment suite.
@@ -47,14 +47,35 @@ The `start.sh` script will:
 ## Getting Started (Local Development)
 
 If you want to run the **frontend locally** while connecting to the Docker-hosted backend (or a cloud Supabase instance), follow these steps.
+=======
+---
+>>>>>>> 10193f4 (Update package.json and check-db.js)
 
-### Prerequisites
+### Step 2: Configure the Environment
+We need to set up the backend configuration first.
 
+<<<<<<< HEAD
 - Node.js 18+ and npm
 - A running Supabase instance (either the local Docker setup or a hosted project)
+=======
+1.  Open your terminal in the root `LovableStartup` folder.
+2.  Go to the `docker` folder:
+    ```bash
+    cd docker
+    ```
+3.  Create the configuration file:
+    ```bash
+    cp .env.example .env
+    ```
+4.  **Important Fix:** To prevent email errors, open the new `.env` file in a text editor.
+    *   Find the line: `ENABLE_EMAIL_AUTOCONFIRM=false`
+    *   Change it to: `ENABLE_EMAIL_AUTOCONFIRM=true`
+    *   *(This automatically verifies new users so you don't need an email server.)*
+>>>>>>> 10193f4 (Update package.json and check-db.js)
 
-### Installation
+---
 
+<<<<<<< HEAD
 **Important:** Make sure you are inside the `app/` directory.
 
 ```bash
@@ -62,96 +83,105 @@ If you want to run the **frontend locally** while connecting to the Docker-hoste
 cd app
 
 # Install dependencies
+=======
+### Step 3: Start the Backend (Docker)
+Now start the database and backend services.
+
+1.  Still in the `docker` folder, run:
+    ```bash
+    docker compose up -d
+    ```
+2.  Wait a minute for everything to start.
+
+---
+
+### Step 4: Setup the Frontend & Database
+Now we switch to the app code.
+
+1.  Go back to the root, then into the `app` folder:
+    ```bash
+    cd ../app
+    ```
+2.  **Install Dependencies** (This installs the verified tools we need):
+    ```bash
+    npm install
+    ```
+3.  **Run Database Migration**:
+    This creates the tables in your database. Copy and run this *exact* command:
+    ```bash
+    npx supabase db push --db-url "postgresql://postgres:your-super-secret-and-long-postgres-password@localhost:54322/postgres?sslmode=disable" --include-all
+    ```
+    *   *Note: If this fails, make sure you are in the `app/` folder and Docker is running.*
+
+---
+
+### Step 5: Run the App!
+You are ready.
+
+1.  Start the frontend:
+    ```bash
+    npm run dev
+    ```
+2.  Open your browser to: **[http://localhost:5173](http://localhost:5173)**
+
+---
+---
+
+## 💻 Option 2: Run Standalone (Without LovableStartup)
+
+If you just want to run the React frontend (e.g., for UI development), or if you already have a backend running elsewhere (like a cloud project).
+
+### 1. Installation
+Navigate to the `app` folder:
+```bash
+cd app
+>>>>>>> 10193f4 (Update package.json and check-db.js)
 npm install
 ```
 
-### Environment Variables
-
-Create a `.env.local` file in the project root:
-
-```env
-VITE_SUPABASE_URL=your-supabase-url
-VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
-```
-
-#### For Hosted Supabase
-
-1. Go to [supabase.com](https://supabase.com) and create a project
-2. Find your project URL and anon key in **Settings > API**
-3. Add them to `.env.local`
-
-#### For Local Supabase (via CLI)
-
-1. Install the [Supabase CLI](https://supabase.com/docs/guides/cli)
-2. Run `supabase start` in your project directory
-3. Get your local credentials from `supabase status`:
-   - API URL: typically `http://127.0.0.1:54321`
-   - Anon Key: shown in the status output
-4. Access Supabase Studio at `http://127.0.0.1:54323`
+### 2. Configure Environment
+Create a `.env.local` file inside the `app` folder with your backend details:
 
 ```env
-VITE_SUPABASE_URL=http://127.0.0.1:54321
-VITE_SUPABASE_ANON_KEY=<your-local-anon-key>
+# Example for local backend (Docker):
+VITE_SUPABASE_URL=http://localhost:8000
+VITE_SUPABASE_ANON_KEY=<your-anon-key-from-docker-env>
+
+# Example for cloud backend:
+# VITE_SUPABASE_URL=https://your-project.supabase.co
+# VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5c...
 ```
+*(You can find the keys in `../docker/.env` or inside your Supabase dashboard)*
 
-### Database Setup
-
-Run the SQL in `supabase/schema.sql` in your Supabase SQL Editor:
-
-1. **Hosted**: Go to your project's SQL Editor in the dashboard
-2. **Local**: Use Studio at `http://127.0.0.1:54323` > SQL Editor
-
-This creates:
-- `tasks` table with all required columns
-- Row Level Security policies for user isolation
-- Performance indexes
-
-### Development
-
+### 3. Start Development Server
 ```bash
-# Start development server
 npm run dev
 ```
-
 Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-### Building for Production
+> **Note:** Standalone mode only runs the UI. Authentication and Database features require a valid backend connection via the `.env.local` variables above.
 
-```bash
-# Build static files to dist/
-npm run build
+---
 
-# Preview the production build locally
-npm run preview
-```
+## 🛠️ Common Problems & Fixes
 
-The `dist/` folder contains a fully static SPA that can be deployed to any static hosting service (Vercel, Netlify, GitHub Pages, S3, etc.).
+**"TLS Error" or "Connection Refused" during migration**
+*   Make sure you copy the *exact* migration command in Step 4. The part `?sslmode=disable` is critical.
+*   Make sure you ran `npm install` first. We configured a specific version of the Supabase tool (`v1.163.0`) in `package.json` that works best on Windows.
 
-## Project Structure
+**"Error sending confirmation email"**
+*   You missed Step 2, point 4.
+*   Go to `docker/.env`, set `ENABLE_EMAIL_AUTOCONFIRM=true`, and then restart Docker (`docker compose down` then `docker compose up -d`).
 
-```
-src/
-├── components/
-│   ├── ui/              # shadcn/ui components
-│   ├── CreateTaskForm.tsx
-│   ├── TaskItem.tsx
-│   └── ProtectedRoute.tsx
-├── contexts/
-│   └── AuthContext.tsx  # Auth state management
-├── hooks/
-│   └── useTasks.ts      # Task CRUD operations
-├── lib/
-│   ├── supabaseClient.ts # Supabase client config
-│   └── utils.ts
-├── pages/
-│   ├── Index.tsx        # Protected home page
-│   ├── Login.tsx        # Auth page
-│   └── NotFound.tsx
-├── types/
-│   └── task.ts          # TypeScript types
-├── App.tsx              # Routes & providers
-└── main.tsx             # Entry point
+**"Auth Error: Database Error Saving New User"**
+*   Your database password might be out of sync.
+*   Reset everything:
+    1.  `docker compose down` (in `docker/` folder)
+    2.  Delete the `docker/volumes/db` folder.
+    3.  `docker compose up -d`
+    4.  Run the migration command from Step 4 again.
 
+<<<<<<< HEAD
 supabase/
 └── schema.sql           # Database schema + RLS policies
 ```
@@ -191,3 +221,14 @@ git submodule update --init --recursive
 ## License
 
 MIT
+=======
+---
+
+## 📂 Project Overview for Developers
+
+*   **`app/`**: The Frontend (React + Vite).
+*   **`docker/`**: The Backend infrastructure (Supabase, Database, Auth).
+*   **`start.sh`**: A script in the root that automates Step 3.
+
+**Tech Stack:** React 18, TypeScript, Tailwind CSS, Supabase.
+>>>>>>> 10193f4 (Update package.json and check-db.js)
